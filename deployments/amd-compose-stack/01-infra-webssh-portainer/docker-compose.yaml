@@ -1,0 +1,39 @@
+services:
+  webssh:
+    image: ${WEBSSH_IMAGE:-jrohy/webssh:latest}
+    container_name: webssh
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=${TZ:-Asia/Taipei}
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  portainer:
+    image: ${PORTAINER_IMAGE:-portainer/portainer-ce:latest}
+    container_name: portainer
+    restart: always
+    ports:
+      - "${PORTAINER_PORT:-9000}:9000"
+    networks:
+      - ai_stack_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+networks:
+  ai_stack_net:
+    external: true
+
+volumes:
+  portainer_data:

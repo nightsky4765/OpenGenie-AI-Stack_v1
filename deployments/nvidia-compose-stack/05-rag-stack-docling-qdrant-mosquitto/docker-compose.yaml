@@ -1,0 +1,81 @@
+services:
+  mosquitto:
+    image: ${MOSQUITTO_IMAGE:-eclipse-mosquitto:latest}
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+    networks:
+      - ai_stack_net
+    volumes:
+      - ${BASE_DIR:-/home/wrt/TigerAI}/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ${BASE_DIR:-/home/wrt/TigerAI}/mosquitto/data:/mosquitto/data
+      - ${BASE_DIR:-/home/wrt/TigerAI}/mosquitto/log:/mosquitto/log
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  docling:
+    image: ${DOCLING_IMAGE:-ghcr.io/docling-project/docling-serve-cu128:latest}
+    container_name: docling-nvidia
+    restart: always
+    ports:
+      - "${HTTP_DOCLING_PORT:-5001}:5001"
+    networks:
+      - ai_stack_net
+    shm_size: ${DOCLING_SHM:-16gb}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ${BASE_DIR:-/home/wrt/TigerAI}/docling:/app/data
+    environment:
+      - DOCLING_SERVE_MAX_SYNC_WAIT=9000
+      - DOCLING_SERVE_ENABLE_UI=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  qdrant:
+    image: ${QDRANT_IMAGE:-qdrant/qdrant:latest}
+    container_name: qdrant-nvidia
+    restart: always
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "6334:6334"
+    networks:
+      - ai_stack_net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ${BASE_DIR:-/home/wrt/TigerAI}/qdrant:/qdrant/storage
+    environment:
+      - QDRANT__STORAGE__PERFORMANCE__MAX_SEARCH_THREADS=${QDRANT_MAX_THREADS:-4}
+      - QDRANT__STORAGE__PERFORMANCE__OPTIMIZER_MAX_THREADS=4
+      - QDRANT__GPU__INDEXING=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+networks:
+  ai_stack_net:
+    external: true
