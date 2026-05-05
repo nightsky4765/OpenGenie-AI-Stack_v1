@@ -63,7 +63,7 @@ nano .env
 ### 4. 硬體校準（建議執行）
 
 ```bash
-sudo bash 00-pre-flight-advisor/tiger-advisor.sh
+sudo bash master-deploy.sh init
 ```
 
 自動偵測 CPU / GPU 規格，將最佳化調優設定寫入 `tiger-tuning.env`。

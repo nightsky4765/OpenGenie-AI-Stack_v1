@@ -63,7 +63,7 @@ nano .env
 ### 4. 하드웨어 캘리브레이션 (권장)
 
 ```bash
-sudo bash 00-pre-flight-advisor/tiger-advisor.sh
+sudo bash master-deploy.sh init
 ```
 
 CPU/GPU 사양을 자동 감지하고 최적화 튜닝 설정을 `tiger-tuning.env`에 기록합니다.

@@ -63,7 +63,7 @@ nano .env
 ### 4. Hardware calibration (recommended)
 
 ```bash
-sudo bash 00-pre-flight-advisor/tiger-advisor.sh
+sudo bash master-deploy.sh init
 ```
 
 This auto-detects your CPU/GPU and writes a tuning profile to `tiger-tuning.env`.
