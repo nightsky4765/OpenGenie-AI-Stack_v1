@@ -49,6 +49,12 @@ usage() {
     echo "  clean  : Stop and remove all Compose managed containers"
 }
 
+# Ensure base data directory exists and is owned by the invoking user
+REAL_USER="${SUDO_USER:-wrt}"
+BASE_DIR="${BASE_DIR:-/home/wrt/TigerAI}"
+mkdir -p "$BASE_DIR"
+chown "$REAL_USER":"$REAL_USER" "$BASE_DIR"
+
 # Conservativedefaults
 TUNING_FILE="./00-pre-flight-advisor/tiger-tuning.env"
 if [ -f "$TUNING_FILE" ]; then

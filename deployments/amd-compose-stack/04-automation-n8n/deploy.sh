@@ -50,6 +50,13 @@ check_db_schema() {
 # --- 2) Logic ---
 [ $# -eq 0 ] && usage
 
+# Auto-detect N8N_URL from hostname if not set in .env
+if [ -z "$N8N_URL" ]; then
+    N8N_URL="http://$(hostname).local:${N8N_PORT:-5678}"
+    LOG "N8N_URL not set, auto-detected: $N8N_URL"
+fi
+export N8N_URL
+
 # Fallback defaults
 DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST:-postgres}
 DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER:-adm}
@@ -62,6 +69,7 @@ FILES_DIR=${FILES_DIR:-/home/wrt/TigerAI/node/n8n/files}
 prep_files() {
     LOG " Configuring Directories and Permissions..."
     sudo mkdir -p "$N8N_DIR" "$FILES_DIR"
+    sudo chown "${SUDO_USER:-wrt}":"${SUDO_USER:-wrt}" "$(dirname "$N8N_DIR")"
     sudo chown -R 1000:1000 "$N8N_DIR" "$FILES_DIR"
     sudo chmod -R 775 "$N8N_DIR" "$FILES_DIR"
 }
@@ -80,7 +88,7 @@ case "$ACTION" in
         # Use TIGER_N8N_WORKERS if available (from tiger-tuning.env), otherwise use N8N_WORKERS
         WORKER_COUNT=${TIGER_N8N_WORKERS:-${N8N_WORKERS:-2}}
         LOG " Starting n8n Full Stack with $WORKER_COUNT workers..."
-        docker compose up -d --scale n8n-worker-01=$WORKER_COUNT
+        docker compose up -d --scale n8n-worker=$WORKER_COUNT
         LOG "✅ n8n deployed: 1 main + $WORKER_COUNT workers"
         ;;
     main)
@@ -90,10 +98,9 @@ case "$ACTION" in
         ;;
     worker)
         check_db_schema
-        LOG " Launching n8n Workflow Engine (Queue Mode)..."
-        #  Advisor 
-        export N8N_CONCURRENCY=${TIGER_N8N_WORKERS:-5}
-        docker compose up -d n8n-worker-01
+        WORKER_COUNT=${TIGER_N8N_WORKERS:-${N8N_WORKERS:-2}}
+        LOG " Launching n8n Workflow Engine (Queue Mode) with $WORKER_COUNT workers..."
+        docker compose up -d --scale n8n-worker=$WORKER_COUNT
         ;;
     down)
         LOG " Stopping n8n services..."

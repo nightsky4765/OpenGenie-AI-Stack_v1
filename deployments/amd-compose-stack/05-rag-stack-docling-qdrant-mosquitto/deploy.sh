@@ -43,6 +43,8 @@ MQTT_HOST_DIR="$BASE_DIR/mosquitto"
 prep_rag_env() {
     LOG " Configuring RAG environment..."
     sudo mkdir -p "$BASE_DIR/docling" "$BASE_DIR/qdrant" "$MQTT_HOST_DIR/config" "$MQTT_HOST_DIR/data" "$MQTT_HOST_DIR/log"
+    REAL_USER="${SUDO_USER:-${USER:-wrt}}"
+    sudo chown -R "$REAL_USER":"$REAL_USER" "$BASE_DIR/docling" "$BASE_DIR/qdrant"
     sudo chown -R 1883:1883 "$MQTT_HOST_DIR"
     if [ ! -f "$MQTT_HOST_DIR/config/mosquitto.conf" ]; then
       echo -e "persistence true\npersistence_location /mosquitto/data/\nlog_dest file /mosquitto/log/mosquitto.log\nlistener 1883\nallow_anonymous true" | sudo tee "$MQTT_HOST_DIR/config/mosquitto.conf" >/dev/null
@@ -55,30 +57,40 @@ ensure_network() {
 
 setup_python_env() {
     LOG " Setting up Python virtual environment for MQTT monitors..."
-    if [ ! -d ".venv" ]; then
-        python3 -m venv .venv || ERROR "Failed to create python venv. Ensure python3-venv is installed."
+
+    # If .venv exists but is broken (missing activate), remove it
+    if [ -d ".venv" ] && [ ! -f ".venv/bin/activate" ]; then
+        LOG " Removing broken .venv..."
+        rm -rf .venv
     fi
+
+    # Create venv if not present; install python3-venv and retry if needed
+    if [ ! -f ".venv/bin/activate" ]; then
+        if ! python3 -m venv .venv 2>/dev/null; then
+            LOG " python3-venv might be missing. Installing..."
+            sudo apt-get install -y python3-venv || ERROR "Failed to install python3-venv."
+            rm -rf .venv
+            python3 -m venv .venv || ERROR "Failed to create python venv after installing python3-venv."
+        fi
+    fi
+
     source .venv/bin/activate
-    pip install --upgrade pip >/dev/null
-    pip install aiomqtt python-dotenv >/dev/null
+    pip install --upgrade pip > /dev/null
+    pip install aiomqtt python-dotenv > /dev/null
     LOG " Python environment ready."
 }
 
-ACTION=$1
-
 # Smart Docling Image Check
 check_docling_image() {
-        if [[ "$ACTION" == "all" || "$ACTION" == "docling" ]]; then
+    if [[ "$ACTION" == "all" || "$ACTION" == "docling" ]]; then
         if ! docker images --format "{{.Repository}}:{{.Tag}}" | grep -qx "$DOCLING_IMAGE"; then
             LOG "Detected Docling image not present ($DOCLING_IMAGE)..."
-            # Clone and build new docling rocm image
             local DOCLING_CLONE_DIR="/tmp/docling-serve-build"
             sudo apt-get update && sudo apt-get install -y git make
             [ -d "$DOCLING_CLONE_DIR" ] || git clone --branch main https://github.com/docling-project/docling-serve.git "$DOCLING_CLONE_DIR"
             pushd "$DOCLING_CLONE_DIR" > /dev/null
-            LOG "Building Docling ROCm Image (Take long time)..."
+            LOG "Building Docling ROCm Image (this will take a while)..."
             sudo make docling-serve-rocm-image
-            # Based on Makefile, it produces ghcr.io/docling-project/docling-serve-rocm:main
             docker tag ghcr.io/docling-project/docling-serve-rocm:main "$DOCLING_IMAGE"
             popd > /dev/null
             LOG "✅ Docling image built and tagged."
@@ -88,17 +100,18 @@ check_docling_image() {
     fi
 }
 
+ACTION=$1
+prep_rag_env
+ensure_network
 check_docling_image
 
 case "$ACTION" in
     all)
         setup_python_env
-        prep_rag_env
         LOG " Starting RAG Stack (Docling, Qdrant, Mosquitto)..."
         docker compose up -d
         ;;
     docling|qdrant|mosquitto)
-        [ "$ACTION" = "mosquitto" ] && prep_rag_env
         LOG " Starting specific service: $ACTION..."
         docker compose up -d "$ACTION"
         ;;

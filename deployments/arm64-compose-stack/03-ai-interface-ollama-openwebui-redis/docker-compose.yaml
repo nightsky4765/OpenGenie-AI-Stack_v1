@@ -50,7 +50,7 @@ services:
 
   openwebui-main:
     image: ${OWUI_IMAGE:-ghcr.io/open-webui/open-webui:main}
-    container_name: openwebui-main-01
+    container_name: openwebui-main
     restart: unless-stopped
     ports:
       - "${OWUI_PORT:-8080}:8080"

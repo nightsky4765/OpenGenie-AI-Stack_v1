@@ -50,6 +50,7 @@ prep_files() {
     local N8N_DIR="${N8N_DIR:-/home/wrt/TigerAI/node/n8n}"
     local FILES_DIR="${FILES_DIR:-/home/wrt/TigerAI/node/n8n/files}"
     sudo mkdir -p "$N8N_DIR" "$FILES_DIR"
+    sudo chown "${SUDO_USER:-wrt}":"${SUDO_USER:-wrt}" "$(dirname "$N8N_DIR")"
     sudo chown -R 1000:1000 "$N8N_DIR" "$FILES_DIR"
     sudo chmod -R 775 "$N8N_DIR" "$FILES_DIR"
 }
@@ -83,6 +84,13 @@ check_db_schema() {
     fi
 }
 
+# Auto-detect N8N_URL from hostname if not set in .env
+if [ -z "$N8N_URL" ]; then
+    N8N_URL="http://$(hostname).local:${N8N_PORT:-5678}"
+    LOG "N8N_URL not set, auto-detected: $N8N_URL"
+fi
+export N8N_URL
+
 ACTION=$1
 prep_files
 ensure_network
@@ -90,8 +98,10 @@ ensure_network
 case "$ACTION" in
     all)
         check_db_schema
-        LOG " Starting n8n Full Stack..."
-        docker compose up -d
+        WORKER_COUNT=${TIGER_N8N_WORKERS:-${N8N_WORKERS:-2}}
+        LOG " Starting n8n Full Stack with $WORKER_COUNT workers..."
+        docker compose up -d --scale n8n-worker=$WORKER_COUNT
+        LOG "✅ n8n deployed: 1 main + $WORKER_COUNT workers"
         ;;
     main)
         check_db_schema
@@ -99,10 +109,8 @@ case "$ACTION" in
         docker compose up -d n8n-main
         ;;
     worker)
-        LOG " Launching n8n Workflow Engine (Queue Mode)..."
-#  Advisor 
-export N8N_CONCURRENCY=${TIGER_N8N_WORKERS:-5}
-docker compose up -d n8n-worker-01
+        WORKER_COUNT=${TIGER_N8N_WORKERS:-${N8N_WORKERS:-2}}
+        docker compose up -d --scale n8n-worker=$WORKER_COUNT
         ;;
     *)
         usage

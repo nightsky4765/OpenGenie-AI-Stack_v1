@@ -11,11 +11,11 @@
 | 3100 | Loki | loki | HTTP | Internal |
 | 3838 | WUD | wud | HTTP | Public |
 | 5001 | Docling | docling-nvidia | HTTP | Internal |
-| 5678 | n8n | n8n-main-01 | HTTP | Public |
+| 5678 | n8n | n8n-main | HTTP | Public |
 | 6333 | Qdrant HTTP | qdrant-nvidia | HTTP | Internal |
 | 6334 | Qdrant gRPC | qdrant-nvidia | gRPC | Internal |
 | 8000 | pgAdmin | pgadmin | HTTP | Admin |
-| 8080 | OpenWebUI | openwebui-main-01 | HTTP | Public |
+| 8080 | OpenWebUI | openwebui-main | HTTP | Public |
 | 8088 | cAdvisor | cadvisor | HTTP | Public |
 | 9000 | Portainer | portainer | HTTP | Admin |
 | 11434 | Ollama | ollama | HTTP | Internal |
@@ -142,12 +142,11 @@ ai_stack_net (external: true)
 ├── pgadmin (hostname: pgadmin)
 ├── redis (hostname: redis)
 ├── ollama (hostname: ollama)
-├── openwebui-main-01 (hostname: openwebui-main-01)
+├── openwebui-main (hostname: openwebui-main)
 ├── openwebui-worker-01 (hostname: openwebui-worker-01)
 ├── openwebui-worker-02 (hostname: openwebui-worker-02)
-├── n8n-main-01 (hostname: n8n-main-01)
-├── n8n-worker-01 (hostname: n8n-worker-01)
-├── n8n-worker-02 (hostname: n8n-worker-02)
+├── n8n-main (hostname: n8n-main)
+├── n8n-worker (hostname: n8n-worker, scalable via --scale)
 ├── mosquitto (hostname: mosquitto)
 ├── docling-nvidia (hostname: docling-nvidia)
 ├── qdrant-nvidia (hostname: qdrant-nvidia)
@@ -237,7 +236,7 @@ cd 03-ai-interface-ollama-openwebui-redis
 docker compose up -d ollama
 
 # 3.2 OpenWebUI (Depends on: PostgreSQL, Redis, Ollama)
-docker compose up -d openwebui-main-01 openwebui-worker-01 openwebui-worker-02
+docker compose up -d openwebui-main openwebui-worker-01 openwebui-worker-02
 
 # OR deploy entire stack
 ./deploy.sh all
@@ -327,10 +326,10 @@ docker exec -it postgres pg_isready -U adm
 docker exec -it redis redis-cli ping
 
 # Check n8n can connect to Redis
-docker logs n8n-main-01 | grep -i redis
+docker logs n8n-main | grep -i redis
 
 # Check OpenWebUI can connect to database
-docker logs openwebui-main-01 | grep -i database
+docker logs openwebui-main | grep -i database
 ```
 
 ---
