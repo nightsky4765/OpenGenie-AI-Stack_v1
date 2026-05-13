@@ -1,7 +1,7 @@
 services:
   n8n-main:
     image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:latest}
-    container_name: n8n-main-01
+    container_name: n8n-main
     restart: always
     ports:
       - "${N8N_PORT:-5678}:5678"
@@ -23,11 +23,15 @@ services:
       - EXECUTIONS_MODE=queue
       - QUEUE_BULL_REDIS_HOST=${REDIS_HOST:-redis}
       - QUEUE_BULL_REDIS_PORT=6379
+      - QUEUE_BULL_REDIS_DB=0
+      - QUEUE_BULL_PREFIX=n8n
       - N8N_USER_MANAGEMENT_JWT_SECRET=${N8N_SECRET:-CHANGE_ME}
       - N8N_ENCRYPTION_KEY=${N8N_SECRET:-CHANGE_ME}
       - GENERIC_TIMEZONE=Asia/Taipei
       - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
       - N8N_BLOCK_FS_WRITE_ACCESS=false
+      - N8N_CORS_ALLOW_ORIGIN=${N8N_CORS_ALLOW_ORIGIN:-*}
+      - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_SECURE_COOKIE=false
       - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
       - N8N_EDITOR_BASE_URL=${N8N_URL:-http://host.docker.internal:5678}
@@ -40,9 +44,9 @@ services:
         max-size: "50m"
         max-file: "3"
 
-  n8n-worker-01:
+  n8n-worker:
     image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:latest}
-    # container_name: n8n-worker-01  <- 移除此行以支援 Scale
+    # no container_name — required for --scale support
     restart: always
     command: worker
     networks:
@@ -62,7 +66,10 @@ services:
       - EXECUTIONS_MODE=queue
       - QUEUE_BULL_REDIS_HOST=${REDIS_HOST:-redis}
       - QUEUE_BULL_REDIS_PORT=6379
+      - QUEUE_BULL_REDIS_DB=0
+      - QUEUE_BULL_PREFIX=n8n
       - N8N_ENCRYPTION_KEY=${N8N_SECRET:-CHANGE_ME}
+      - N8N_SECURE_COOKIE=false
       - N8N_WORKER_MAX_CONCURRENT_EXECUTIONS=${WORKER_CONCURRENCY:-5}
     extra_hosts:
       - "host.docker.internal:host-gateway"

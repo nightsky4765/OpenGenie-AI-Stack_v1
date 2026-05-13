@@ -43,6 +43,7 @@ prep_rag_env() {
     LOG " Configuring RAG environment..."
     local RAG_BASE=${BASE_DIR:-/opt/tigerai}
     sudo mkdir -p "$RAG_BASE/docling" "$RAG_BASE/qdrant" "$RAG_BASE/mosquitto/config" "$RAG_BASE/mosquitto/data" "$RAG_BASE/mosquitto/log"
+    sudo chown -R "${SUDO_USER:-wrt}":"${SUDO_USER:-wrt}" "$RAG_BASE/docling" "$RAG_BASE/qdrant"
     sudo chown -R 1883:1883 "$RAG_BASE/mosquitto"
     
     if [ ! -f "$RAG_BASE/mosquitto/config/mosquitto.conf" ]; then
@@ -52,12 +53,26 @@ prep_rag_env() {
 
 setup_python_env() {
     LOG " Setting up Python virtual environment for MQTT monitors..."
-    if [ ! -d ".venv" ]; then
-        python3 -m venv .venv || ERROR "Failed to create python venv. Ensure python3-venv is installed."
+
+    # If .venv exists but is broken (missing activate), remove it
+    if [ -d ".venv" ] && [ ! -f ".venv/bin/activate" ]; then
+        LOG " Removing broken .venv..."
+        rm -rf .venv
     fi
+
+    # Create venv if not present; install python3-venv and retry if needed
+    if [ ! -f ".venv/bin/activate" ]; then
+        if ! python3 -m venv .venv 2>/dev/null; then
+            LOG " python3-venv might be missing. Installing..."
+            sudo apt-get install -y python3-venv || ERROR "Failed to install python3-venv."
+            rm -rf .venv
+            python3 -m venv .venv || ERROR "Failed to create python venv after installing python3-venv."
+        fi
+    fi
+
     source .venv/bin/activate
-    pip install --upgrade pip >/dev/null
-    pip install aiomqtt python-dotenv >/dev/null
+    pip install --upgrade pip > /dev/null
+    pip install aiomqtt python-dotenv > /dev/null
     LOG " Python environment ready."
 }
 

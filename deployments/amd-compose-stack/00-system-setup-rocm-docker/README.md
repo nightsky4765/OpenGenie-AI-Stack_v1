@@ -4,7 +4,7 @@
 
 ```
 00-system-setup-rocm-docker/
-├── install.sh    ← 唯一需要的安裝腳本
+├── deploy.sh     ← 唯一需要的安裝腳本
 ├── .env          ← 本地配置（可選）
 └── README.md     ← 本說明文檔
 ```
@@ -13,7 +13,7 @@
 
 ```bash
 cd deployments/amd-compose-stack/00-system-setup-rocm-docker/
-sudo bash install.sh
+sudo bash deploy.sh
 ```
 
 ## ✅ 功能

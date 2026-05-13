@@ -1,7 +1,7 @@
 services:
   n8n-main:
     image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:latest}
-    container_name: n8n-main-01
+    container_name: n8n-main
     restart: always
     ports:
       - "${N8N_PORT:-5678}:5678"
@@ -33,6 +33,8 @@ services:
       - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
       - N8N_EDITOR_BASE_URL=${N8N_URL:-http://localhost:5678}
       - WEBHOOK_URL=${N8N_URL:-http://localhost:5678}
+      - N8N_CORS_ALLOW_ORIGIN=${N8N_CORS_ALLOW_ORIGIN:-*}
+      - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_SECURE_COOKIE=false
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -44,44 +46,9 @@ services:
         max-size: "50m"
         max-file: "3"
 
-  n8n-worker-01:
+  n8n-worker:
     image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:latest}
-    container_name: n8n-worker-01
-    restart: always
-    command: worker
-    networks:
-      - ai_stack_net
-    volumes:
-      - ${N8N_DIR:-/home/wrt/TigerAI/node/n8n}:/home/node/.n8n
-      - ${FILES_DIR:-/home/wrt/TigerAI/node/n8n/files}:/home/node/.n8n-files
-    environment:
-      - DB_TYPE=${DB_TYPE:-postgresdb}
-      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE:-tigerai}
-      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST:-postgres}
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER:-adm}
-      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD:-CHANGE_ME}
-      - DB_POSTGRESDB_SCHEMA=${DB_POSTGRESDB_SCHEMA:-public}
-      - QUEUE_MODE=${QUEUE_MODE:-redis}
-      - EXECUTIONS_MODE=queue
-      - QUEUE_BULL_REDIS_HOST=${REDIS_HOST:-redis}
-      - QUEUE_BULL_REDIS_PORT=6379
-      - QUEUE_BULL_REDIS_DB=0
-      - QUEUE_BULL_PREFIX=n8n
-      - N8N_ENCRYPTION_KEY=${N8N_SECRET:-CHANGE_ME}
-      - N8N_SECURE_COOKIE=false
-      - N8N_WORKER_MAX_CONCURRENT_EXECUTIONS=${WORKER_CONCURRENCY:-5}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "3"
-
-  n8n-worker-02:
-    image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:latest}
-    container_name: n8n-worker-02
+    # no container_name — required for --scale support
     restart: always
     command: worker
     networks:

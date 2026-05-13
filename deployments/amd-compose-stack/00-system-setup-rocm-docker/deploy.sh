@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =====================================================================
 # TigerAI ROCm + Docker 安裝腳本
-# 版本: v2.12.31 (2026-02-07) - 簡化版 
+# 版本: v2.12.31 (2026-02-07) - 簡化版
 # =====================================================================
 
 set -eo pipefail
@@ -35,7 +35,7 @@ ERROR(){ echo -e "${RED}[TigerAI ERROR]${NC} $*"; exit 1; }
 # ----------------------- 2) 安裝 ROCm -----------------------
 install_rocm() {
     LOG "📦 [1/4] 安裝 ROCm..."
-    
+
     # 刪除可能存在的損壞檔案
     if [ -f "$DEB_FILENAME" ] && [ ! -s "$DEB_FILENAME" ]; then
         rm -f "$DEB_FILENAME"
@@ -50,26 +50,26 @@ install_rocm() {
     else
         LOG "✅ 找到本地檔案: $DEB_FILENAME"
     fi
-    
+
     # 安裝 amdgpu-install
     LOG "安裝 amdgpu-install..."
     sudo apt install -y ./"$DEB_FILENAME"
-    
+
     # 更新套件列表
     LOG "更新套件列表..."
     sudo apt update
-    
+
     # 安裝 kernel headers
     LOG "安裝 kernel headers..."
     sudo apt install -y "linux-headers-$(uname -r)" "linux-modules-extra-$(uname -r)"
-    
+
     # 安裝 amdgpu-dkms
     LOG "安裝 amdgpu-dkms..."
     sudo apt install -y amdgpu-dkms
-    
-    # 安裝 rocm (選購，如果您需要完整工具包)
-    # LOG "安裝 rocm 完整套件..."
-    # sudo apt install -y rocm
+
+    # 安裝 rocm 完整套件
+    LOG "安裝 rocm 完整套件..."
+    sudo apt install -y rocm
 
     LOG "✅ ROCm 基礎安裝完成"
 }
@@ -77,7 +77,7 @@ install_rocm() {
 # ----------------------- 3) 安裝 Docker -----------------------
 install_docker() {
     LOG "🐳 [2/4] 安裝 Docker..."
-    
+
     if command -v docker &>/dev/null; then
         SKIP "Docker 已存在，跳過安裝"
     else
@@ -92,14 +92,14 @@ install_docker() {
         sudo systemctl enable --now docker
         LOG "✅ Docker 安裝完成"
     fi
-    
+
     sudo usermod -aG docker,render,video "$USER"
 }
 
 # ----------------------- 4) 系統優化 -----------------------
 configure_system() {
     LOG "🖥️ [3/4] 系統優化..."
-    
+
     # GDM3 設定
     GDM_CONFIG="/etc/gdm3/custom.conf"
     if [ -f "$GDM_CONFIG" ]; then
@@ -146,7 +146,7 @@ WantedBy=multi-user.target
 EOF
     sudo systemctl daemon-reload
     sudo systemctl enable rocm-gpu-performance.service
-    
+
     LOG "✅ 系統優化完成"
 }
 
@@ -162,7 +162,7 @@ LOG "============================================================="
 LOG "✅ 安裝完成！"
 LOG ""
 LOG "已安裝:"
-LOG "  - ROCm (amdgpu-install & dkms)"
+LOG "  - ROCm (amdgpu-dkms + rocm 完整套件)"
 LOG "  - Docker CE"
 LOG "  - GPU 效能優化服務"
 LOG ""

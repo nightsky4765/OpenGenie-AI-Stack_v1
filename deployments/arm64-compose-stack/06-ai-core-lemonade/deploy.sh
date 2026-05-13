@@ -68,7 +68,7 @@ configure_services() {
     local AUTO_THREADS=${TIGER_CPU_THREADS:-16}
 
     sudo mkdir -p "${MODELS_DIR}" "${LOG_DIR}"
-    sudo chown -R ${USER_NAME:-wrt}:${USER_NAME:-wrt} "${BASE_DIR:-/home/wrt/TigerAI}"
+    sudo chown -R ${SUDO_USER:-wrt}:${SUDO_USER:-wrt} "${BASE_DIR:-/home/wrt/TigerAI}"
 
     # A. EDU Service (Port 8800)
     cat <<EOF | sudo tee /etc/systemd/system/lemonade-edu.service > /dev/null
