@@ -530,7 +530,8 @@
       .nav-links { display: none; }
 
       .phases-layout,
-      .quickstart-grid { grid-template-columns: 1fr; gap: 32px; }
+      .quickstart-grid,
+      .ai-agent-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
 
       section { padding: 56px 16px; }
     }
@@ -544,6 +545,7 @@
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#phases">Architecture</a></li>
+    <li><a href="#ai-agent">AI Agent</a></li>
     <li><a href="#quickstart">Quick Start</a></li>
     <li><a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="nav-cta" target="_blank" rel="noopener">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -733,6 +735,102 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI AGENT INTEGRATION -->
+<section id="ai-agent" style="border-top:1px solid var(--border)">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:56px">
+      <span class="section-label">AI Agent Integration</span>
+      <h2 class="section-title">Designed for LLMs<br />and autonomous agents</h2>
+      <p class="section-desc" style="margin:0 auto">A standard <code style="font-size:14px;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--accent)">llms.txt</code> index for any AI assistant, plus a 5-skill deployment protocol that turns the install into a fully autonomous flow.</p>
+    </div>
+
+    <div class="ai-agent-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+
+      <!-- llms.txt card -->
+      <div class="feature-card" style="padding:32px">
+        <div class="feature-icon">📄</div>
+        <h3 style="font-size:18px;margin-bottom:12px">llms.txt</h3>
+        <p style="margin-bottom:20px">
+          Standardised <a href="https://llmstxt.org/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">llms.txt</a> index at the project root. Lets any LLM-powered assistant (Claude, ChatGPT, Gemini, Perplexity, etc.) discover and ingest the project's docs, skills, hardware stacks, and 12-phase modules in one fetch.
+        </p>
+        <div class="code-block" style="margin-bottom:16px">
+          <div class="code-header">
+            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+            <span>llms.txt</span>
+          </div>
+          <pre><span class="c"># OpenGenie AI Stack</span>
+<span class="c"># Modular Self-Hosted AI Infrastructure</span>
+
+&gt; "OpenGenie AI Stack is a modular,
+  self-hosted AI infrastructure
+  framework that runs on AMD ROCm,
+  NVIDIA CUDA, and ARM64 hardware..."
+
+<span class="c">## Project overview</span>
+- [README]                  (en/zh/ja/ko)
+- [System Design Document]  (SDD.md)
+- [Contributing guide]      (CONTRIBUTING.md)
+
+<span class="c">## Agent skills</span>
+- [Master orchestrator]
+- [Deployment state machine]
+- [Error recovery guide]
+- [GPU robustness]
+- [Full purge procedure]
+
+<span class="c">## Hardware stacks  / 12-phase modules</span>
+<span class="c">## Default service ports / Repository</span></pre>
+        </div>
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/llms.txt" class="btn-secondary" target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">View llms.txt →</a>
+      </div>
+
+      <!-- Agent Skills card -->
+      <div class="feature-card" style="padding:32px">
+        <div class="feature-icon">🤖</div>
+        <h3 style="font-size:18px;margin-bottom:12px">Agent Skills (autonomous deployment)</h3>
+        <p style="margin-bottom:20px">
+          Five protocol files in <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code> turn an AI coding assistant (Claude Code, Antigravity) into an autonomous deployment agent. State machine with disk-persisted recovery — survives reboots, network drops, and mid-install interruptions.
+        </p>
+        <div class="phases-list" style="margin-bottom:16px">
+          <div class="phase-row">
+            <div class="phase-num">00</div>
+            <div class="phase-info"><strong>Master Orchestrator</strong><span>Bootstrap rules, state persistence, execution loop</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">01</div>
+            <div class="phase-info"><strong>Deployment State Machine</strong><span>Pristine → drivers → reboot → init → app</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">02</div>
+            <div class="phase-info"><strong>Error Recovery Guide</strong><span>APT / Docker / driver / port self-healing</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">03</div>
+            <div class="phase-info"><strong>GPU Robustness</strong><span>Multi-layer NVIDIA / AMD / CPU / ARM detection</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">04</div>
+            <div class="phase-info"><strong>Full Purge Procedure</strong><span>Complete teardown for clean reinstall</span></div>
+          </div>
+        </div>
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/skills" class="btn-secondary" target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">Browse skills/ →</a>
+      </div>
+
+    </div>
+
+    <!-- Usage notes -->
+    <div style="margin-top:48px;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px">
+      <h3 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)">▸ How to use</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px">
+        <strong style="color:var(--fg)">For end users:</strong> Open the project in Antigravity / Claude Code, ask the assistant to "install this project" — it reads <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code> first, detects your GPU, generates a tuning profile, walks you through credential setup, and deploys all 12 phases with self-healing recovery.
+      </p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7">
+        <strong style="color:var(--fg)">For LLM apps:</strong> Fetch <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">https://&lt;your-fork&gt;/llms.txt</code> — every doc, skill, and module is linked as a raw markdown URL ready for ingestion.
+      </p>
     </div>
   </div>
 </section>
