@@ -50,7 +50,7 @@ services:
           "ctx_size": 81920,
           "extra_models_dir": "/models",
           "llamacpp": {
-            "args": "--flash-attn on --threads $$THREADS --parallel 28 --tensor-split 1,1 --cache-type-k q8_0 --cache-type-v q8_0",
+            "args": "--threads $$THREADS --parallel 4 --cache-type-k q8_0 --cache-type-v q8_0",
             "backend": "vulkan"
           }
         }
@@ -89,7 +89,7 @@ services:
           "ctx_size": 131072,
           "extra_models_dir": "/models",
           "llamacpp": {
-            "args": "--flash-attn on --threads $$THREADS --parallel 2 --tensor-split 3,1 --cache-type-k q8_0 --cache-type-v q8_0",
+            "args": "--threads $$THREADS --parallel 2 --cache-type-k q8_0 --cache-type-v q8_0",
             "backend": "vulkan"
           }
         }
@@ -126,7 +126,7 @@ services:
           "ctx_size": 8192,
           "extra_models_dir": "/models",
           "llamacpp": {
-            "args": "--flash-attn on --threads 8 --embedding",
+            "args": "--threads 8 --embedding",
             "backend": "vulkan"
           }
         }
