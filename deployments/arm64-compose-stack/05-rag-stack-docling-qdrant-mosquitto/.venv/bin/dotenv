@@ -1,8 +1,0 @@
-#!/bin/sh
-'''exec' /home/wrt/Downloads/OpenGenie-AI-Stack_v1-main/deployments/arm64-compose-stack/05-rag-stack-docling-qdrant-mosquitto/.venv/bin/python3 "$0" "$@"
-' '''
-import sys
-from dotenv.__main__ import cli
-if __name__ == '__main__':
-    sys.argv[0] = sys.argv[0].removesuffix('.exe')
-    sys.exit(cli())
