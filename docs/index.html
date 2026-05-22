@@ -1,28 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OpenGenie AI Stack — Self-Hosted AI Infrastructure</title>
-  <meta name="description" content="A modular, self-hosted AI infrastructure framework for AMD, NVIDIA, and ARM64 hardware. Deploy LLM inference, RAG pipeline, workflow automation, and observability on your own server." />
+  <meta name="description"
+    content="A modular, self-hosted AI infrastructure framework for AMD, NVIDIA, and ARM64 hardware. Deploy LLM inference, RAG pipeline, workflow automation, and observability on your own server." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #0F172A;
-      --surface:  #1E293B;
-      --border:   #475569;
-      --fg:       #F8FAFC;
-      --muted:    #94A3B8;
-      --accent:   #22C55E;
-      --accent-dim: #16A34A;
-      --radius:   8px;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html { scroll-behavior: smooth; }
+    .step-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .step-btn:hover {
+      border-color: var(--accent);
+      color: var(--fg);
+      background: rgba(34, 197, 94, 0.05);
+    }
+
+    .step-btn.active-step {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0F172A;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
+    }
+
+    :root {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --border: #475569;
+      --fg: #F8FAFC;
+      --muted: #94A3B8;
+      --accent: #22C55E;
+      --accent-dim: #16A34A;
+      --radius: 8px;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);
@@ -36,7 +80,9 @@
     /* ── NAV ── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       display: flex;
       align-items: center;
@@ -56,7 +102,9 @@
       letter-spacing: -0.02em;
     }
 
-    .nav-logo span { color: var(--accent); }
+    .nav-logo span {
+      color: var(--accent);
+    }
 
     .nav-links {
       display: flex;
@@ -72,7 +120,9 @@
       transition: color 0.15s;
     }
 
-    .nav-links a:hover { color: var(--fg); }
+    .nav-links a:hover {
+      color: var(--fg);
+    }
 
     .nav-cta {
       display: flex;
@@ -87,7 +137,11 @@
       transition: background 0.15s, transform 0.1s !important;
     }
 
-    .nav-cta:hover { background: var(--accent-dim) !important; transform: translateY(-1px); color: #0F172A !important; }
+    .nav-cta:hover {
+      background: var(--accent-dim) !important;
+      transform: translateY(-1px);
+      color: #0F172A !important;
+    }
 
     /* ── HERO ── */
     #hero {
@@ -105,9 +159,12 @@
     #hero::before {
       content: '';
       position: absolute;
-      top: -200px; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -116,12 +173,12 @@
       align-items: center;
       gap: 6px;
       padding: 4px 12px;
-      border: 1px solid rgba(34,197,94,0.35);
+      border: 1px solid rgba(34, 197, 94, 0.35);
       border-radius: 100px;
       font-size: 12px;
       font-weight: 500;
       color: var(--accent);
-      background: rgba(34,197,94,0.08);
+      background: rgba(34, 197, 94, 0.08);
       margin-bottom: 28px;
       letter-spacing: 0.03em;
     }
@@ -132,12 +189,12 @@
       line-height: 1.1;
       letter-spacing: -0.03em;
       margin-bottom: 24px;
-      text-shadow: 0 0 60px rgba(34,197,94,0.15);
+      text-shadow: 0 0 60px rgba(34, 197, 94, 0.15);
     }
 
     h1 .highlight {
       color: var(--accent);
-      text-shadow: 0 0 20px rgba(34,197,94,0.4);
+      text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
     }
 
     .hero-desc {
@@ -169,13 +226,13 @@
       font-size: 15px;
       text-decoration: none;
       transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-      box-shadow: 0 0 20px rgba(34,197,94,0.25);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
     }
 
     .btn-primary:hover {
       background: var(--accent-dim);
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(34,197,94,0.4);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
     }
 
     .btn-secondary {
@@ -195,7 +252,7 @@
 
     .btn-secondary:hover {
       border-color: var(--accent);
-      background: rgba(34,197,94,0.06);
+      background: rgba(34, 197, 94, 0.06);
       transform: translateY(-2px);
     }
 
@@ -217,7 +274,9 @@
     }
 
     /* ── SECTIONS SHARED ── */
-    section { padding: 80px 24px; }
+    section {
+      padding: 80px 24px;
+    }
 
     .container {
       max-width: 1100px;
@@ -250,14 +309,18 @@
     }
 
     /* ── FEATURES ── */
-    #features { border-top: 1px solid var(--border); }
+    #features {
+      border-top: 1px solid var(--border);
+    }
 
     .features-header {
       text-align: center;
       margin-bottom: 56px;
     }
 
-    .features-header .section-desc { margin: 0 auto; }
+    .features-header .section-desc {
+      margin: 0 auto;
+    }
 
     .features-grid {
       display: grid;
@@ -271,17 +334,19 @@
       border-radius: 12px;
       padding: 28px;
       transition: border-color 0.2s, transform 0.15s;
+      min-width: 0;
     }
 
     .feature-card:hover {
-      border-color: rgba(34,197,94,0.4);
+      border-color: rgba(34, 197, 94, 0.4);
       transform: translateY(-3px);
     }
 
     .feature-icon {
-      width: 44px; height: 44px;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.2);
+      width: 44px;
+      height: 44px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.2);
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -304,7 +369,11 @@
     }
 
     /* ── PHASES ── */
-    #phases { background: rgba(30,41,59,0.3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    #phases {
+      background: rgba(30, 41, 59, 0.3);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
 
     .phases-layout {
       display: grid;
@@ -329,10 +398,13 @@
       transition: background 0.15s;
     }
 
-    .phase-row:hover { background: rgba(34,197,94,0.06); }
+    .phase-row:hover {
+      background: rgba(34, 197, 94, 0.06);
+    }
 
     .phase-num {
-      width: 32px; height: 32px;
+      width: 32px;
+      height: 32px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -345,9 +417,21 @@
       flex-shrink: 0;
     }
 
-    .phase-info { flex: 1; }
-    .phase-info strong { display: block; font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-    .phase-info span { font-size: 12px; color: var(--muted); }
+    .phase-info {
+      flex: 1;
+    }
+
+    .phase-info strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .phase-info span {
+      font-size: 12px;
+      color: var(--muted);
+    }
 
     /* ── PORTS ── */
     .ports-table {
@@ -368,11 +452,13 @@
     }
 
     .ports-table tbody tr {
-      border-bottom: 1px solid rgba(71,85,105,0.4);
+      border-bottom: 1px solid rgba(71, 85, 105, 0.4);
       transition: background 0.12s;
     }
 
-    .ports-table tbody tr:hover { background: rgba(34,197,94,0.04); }
+    .ports-table tbody tr:hover {
+      background: rgba(34, 197, 94, 0.04);
+    }
 
     .ports-table tbody td {
       padding: 11px 16px;
@@ -386,7 +472,9 @@
     }
 
     /* ── QUICKSTART ── */
-    #quickstart { border-top: 1px solid var(--border); }
+    #quickstart {
+      border-top: 1px solid var(--border);
+    }
 
     .quickstart-grid {
       display: grid;
@@ -395,7 +483,11 @@
       align-items: start;
     }
 
-    .steps { display: flex; flex-direction: column; gap: 20px; }
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
     .step {
       display: flex;
@@ -403,7 +495,8 @@
     }
 
     .step-num {
-      width: 28px; height: 28px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: var(--accent);
       color: #0F172A;
@@ -416,14 +509,27 @@
       margin-top: 2px;
     }
 
-    .step-body strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .step-body p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .step-body strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-body p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
 
     .code-block {
       background: #0D1117;
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .code-header {
@@ -431,21 +537,35 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
-      background: rgba(30,41,59,0.6);
+      background: rgba(30, 41, 59, 0.6);
       border-bottom: 1px solid var(--border);
       font-size: 12px;
       color: var(--muted);
       font-weight: 500;
     }
 
-    .code-dots { display: flex; gap: 6px; }
+    .code-dots {
+      display: flex;
+      gap: 6px;
+    }
+
     .code-dots span {
-      width: 10px; height: 10px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
     }
-    .dot-r { background: #FF5F57; }
-    .dot-y { background: #FFBD2E; }
-    .dot-g { background: #28CA41; }
+
+    .dot-r {
+      background: #FF5F57;
+    }
+
+    .dot-y {
+      background: #FFBD2E;
+    }
+
+    .dot-g {
+      background: #28CA41;
+    }
 
     .code-block pre {
       padding: 20px;
@@ -454,20 +574,33 @@
       line-height: 1.7;
       color: #E2E8F0;
       overflow-x: auto;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    .code-block pre .c { color: #64748B; }
-    .code-block pre .k { color: var(--accent); }
-    .code-block pre .s { color: #93C5FD; }
+    .code-block pre .c {
+      color: #64748B;
+    }
+
+    .code-block pre .k {
+      color: var(--accent);
+    }
+
+    .code-block pre .s {
+      color: #93C5FD;
+    }
 
     /* ── CTA ── */
     #cta {
       border-top: 1px solid var(--border);
       text-align: center;
-      background: linear-gradient(180deg, transparent 0%, rgba(34,197,94,0.04) 100%);
+      background: linear-gradient(180deg, transparent 0%, rgba(34, 197, 94, 0.04) 100%);
     }
 
-    #cta .section-title { margin-bottom: 12px; }
+    #cta .section-title {
+      margin-bottom: 12px;
+    }
 
     #cta .section-desc {
       margin: 0 auto 36px;
@@ -502,7 +635,10 @@
       transition: border-color 0.15s, color 0.15s;
     }
 
-    .social-badge:hover { border-color: var(--accent); color: var(--fg); }
+    .social-badge:hover {
+      border-color: var(--accent);
+      color: var(--fg);
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -513,12 +649,19 @@
       color: var(--muted);
     }
 
-    footer a { color: var(--accent); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
 
     /* ── DIVIDER ── */
     .divider {
-      width: 48px; height: 3px;
+      width: 48px;
+      height: 3px;
       background: var(--accent);
       border-radius: 2px;
       margin: 20px 0;
@@ -526,373 +669,508 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 0 16px; }
-      .nav-links { display: none; }
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
 
       .phases-layout,
       .quickstart-grid,
-      .ai-agent-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .ai-agent-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
 
-      section { padding: 56px 16px; }
+      .phases-layout > div,
+      .quickstart-grid > div,
+      .ai-agent-grid > div {
+        min-width: 0 !important;
+      }
+
+      section {
+        padding: 56px 16px;
+      }
+
+      .feature-card,
+      .skill-explorer-card {
+        padding: 20px !important;
+      }
+
+      .code-block pre {
+        padding: 12px !important;
+        font-size: 11.5px !important;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-logo">Open<span>Genie</span></a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#phases">Architecture</a></li>
-    <li><a href="#ai-agent">AI Agent</a></li>
-    <li><a href="#quickstart">Quick Start</a></li>
-    <li><a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="nav-cta" target="_blank" rel="noopener">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-      GitHub
-    </a></li>
-  </ul>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Open<span>Genie</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#phases">Architecture</a></li>
+      <li><a href="#ai-agent">AI Agent</a></li>
+      <li><a href="#quickstart">Quick Start</a></li>
+      <li><a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="nav-cta" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          GitHub
+        </a></li>
+    </ul>
+  </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="badge">
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
-    Open Source · MIT License
-  </div>
-  <h1>
-    Self-Hosted AI Stack<br />
-    <span class="highlight">Ready in Minutes</span>
-  </h1>
-  <p class="hero-desc">
-    A modular, production-grade AI infrastructure framework for AMD, NVIDIA, and ARM64 hardware.
-    LLM inference · RAG pipeline · Workflow automation · Full observability.
-  </p>
-  <div class="hero-actions">
-    <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="btn-primary" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-      View on GitHub
-    </a>
-    <a href="#quickstart" class="btn-secondary">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Quick Start
-    </a>
-  </div>
-  <div class="gpu-badges">
-    <span class="gpu-tag">AMD ROCm</span>
-    <span class="gpu-tag">NVIDIA CUDA</span>
-    <span class="gpu-tag">ARM64 / Apple Silicon</span>
-    <span class="gpu-tag">Ubuntu 22.04 / 24.04</span>
-    <span class="gpu-tag">Docker Compose</span>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="container">
-    <div class="features-header">
-      <span class="section-label">Core Features</span>
-      <h2 class="section-title">Everything you need,<br />nothing you don't</h2>
-      <p class="section-desc">Each component is independently deployable. Start with LLM inference, add RAG when ready, bolt on observability later.</p>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="badge">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+        <circle cx="5" cy="5" r="5" />
+      </svg>
+      Open Source · MIT License
     </div>
-    <div class="features-grid">
-
-      <div class="feature-card">
-        <div class="feature-icon">🖥️</div>
-        <h3>Multi-GPU Support</h3>
-        <p>AMD ROCm, NVIDIA CUDA, and ARM64 stacks included. Same 12-phase workflow across all hardware targets.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h3>LLM Inference</h3>
-        <p>Ollama + OpenWebUI with always-on VRAM optimization. Lemonade native engine for AMD high-performance inference.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📚</div>
-        <h3>RAG Pipeline</h3>
-        <p>Qdrant vector database, Docling document processor, and Mosquitto MQTT broker — fully wired and ready.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Workflow Automation</h3>
-        <p>n8n in queue mode with Redis and distributed workers. Enterprise-grade orchestration on your own hardware.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Full Observability</h3>
-        <p>Grafana + Prometheus + Loki + cAdvisor. DCGM Exporter for GPU telemetry and SLA dashboards out of the box.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔧</div>
-        <h3>Auto Hardware Tuning</h3>
-        <p>HWI Advisor auto-detects your CPU and GPU, then writes an optimized tuning profile before first deploy.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">💾</div>
-        <h3>One-Click Backup</h3>
-        <p>Timestamped backup and restore for all persistent data. VRAM purge included. No scripting required.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🏗️</div>
-        <h3>12-Phase Methodology</h3>
-        <p>Structured, independently deployable modules — from driver setup to lifecycle management. Deploy what you need, skip the rest.</p>
-      </div>
-
+    <h1>
+      Self-Hosted AI Stack<br />
+      <span class="highlight">Ready in Minutes</span>
+    </h1>
+    <p class="hero-desc">
+      A modular, production-grade AI infrastructure framework for AMD, NVIDIA, and ARM64 hardware.
+      LLM inference · RAG pipeline · Workflow automation · Full observability.
+    </p>
+    <div class="hero-actions">
+      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="btn-primary" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+        </svg>
+        View on GitHub
+      </a>
+      <a href="#quickstart" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        Quick Start
+      </a>
     </div>
-  </div>
-</section>
+    <div class="gpu-badges">
+      <span class="gpu-tag">AMD ROCm</span>
+      <span class="gpu-tag">NVIDIA CUDA</span>
+      <span class="gpu-tag">ARM64 / Apple Silicon</span>
+      <span class="gpu-tag">Ubuntu 22.04 / 24.04</span>
+      <span class="gpu-tag">Docker Compose</span>
+    </div>
+  </section>
 
-<!-- ARCHITECTURE -->
-<section id="phases">
-  <div class="container">
-    <div class="phases-layout">
-      <div>
-        <span class="section-label">Architecture</span>
-        <h2 class="section-title">12-Phase deployment</h2>
-        <div class="divider"></div>
-        <p class="section-desc">Each phase is a self-contained Docker Compose module with its own <code style="font-size:13px;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--accent)">deploy.sh</code>. Roll forward one layer at a time, or deploy everything in a single command.</p>
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="features-header">
+        <span class="section-label">Core Features</span>
+        <h2 class="section-title">Everything you need,<br />nothing you don't</h2>
+        <p class="section-desc">Each component is independently deployable. Start with LLM inference, add RAG when
+          ready, bolt on observability later.</p>
       </div>
-      <div class="phases-list">
-        <div class="phase-row">
-          <div class="phase-num">00</div>
-          <div class="phase-info"><strong>HWI Advisor</strong><span>Auto hardware calibration &amp; tuning profile</span></div>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Multi-GPU Support</h3>
+          <p>AMD ROCm, NVIDIA CUDA, and ARM64 stacks included. Same 12-phase workflow across all hardware targets.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">01</div>
-          <div class="phase-info"><strong>Infrastructure</strong><span>Portainer, WebSSH</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>LLM Inference</h3>
+          <p>Ollama + OpenWebUI with always-on VRAM optimization. Lemonade native engine for AMD high-performance
+            inference.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">02</div>
-          <div class="phase-info"><strong>Database</strong><span>PostgreSQL 17, pgAdmin 4</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>RAG Pipeline</h3>
+          <p>Qdrant vector database, Docling document processor, and Mosquitto MQTT broker — fully wired and ready.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">03</div>
-          <div class="phase-info"><strong>AI Interface</strong><span>Ollama, OpenWebUI, Redis</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Workflow Automation</h3>
+          <p>n8n in queue mode with Redis and distributed workers. Enterprise-grade orchestration on your own hardware.
+          </p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">04</div>
-          <div class="phase-info"><strong>Automation</strong><span>n8n queue mode + workers</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Full Observability</h3>
+          <p>Grafana + Prometheus + Loki + cAdvisor. DCGM Exporter for GPU telemetry and SLA dashboards out of the box.
+          </p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">05</div>
-          <div class="phase-info"><strong>RAG Stack</strong><span>Qdrant, Docling, Mosquitto</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>Auto Hardware Tuning</h3>
+          <p>HWI Advisor auto-detects your CPU and GPU, then writes an optimized tuning profile before first deploy.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">06</div>
-          <div class="phase-info"><strong>AI Core Engine</strong><span>Lemonade inference engine</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>One-Click Backup</h3>
+          <p>Timestamped backup and restore for all persistent data. VRAM purge included. No scripting required.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">07</div>
-          <div class="phase-info"><strong>Validation</strong><span>Health checks, benchmark scripts</span></div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏗️</div>
+          <h3>12-Phase Methodology</h3>
+          <p>Structured, independently deployable modules — from driver setup to lifecycle management. Deploy what you
+            need, skip the rest.</p>
         </div>
-        <div class="phase-row">
-          <div class="phase-num">08</div>
-          <div class="phase-info"><strong>Backup &amp; Recovery</strong><span>1-click backup, restore, VRAM purge</span></div>
-        </div>
-        <div class="phase-row">
-          <div class="phase-num">09</div>
-          <div class="phase-info"><strong>Monitoring &amp; Alerts</strong><span>tiger-monitor, MQTT alerting</span></div>
-        </div>
-        <div class="phase-row">
-          <div class="phase-num">10</div>
-          <div class="phase-info"><strong>Observability</strong><span>Grafana, Prometheus, Loki, cAdvisor</span></div>
-        </div>
-        <div class="phase-row">
-          <div class="phase-num">11</div>
-          <div class="phase-info"><strong>Lifecycle</strong><span>What's Up Docker (WUD)</span></div>
-        </div>
+
       </div>
     </div>
+  </section>
 
-    <!-- Port table -->
-    <div style="margin-top:56px">
-      <h3 style="font-size:18px;font-weight:600;margin-bottom:16px;letter-spacing:-0.01em;">Default Service Ports</h3>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
-        <table class="ports-table">
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Description</th>
-              <th>Port</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>OpenWebUI</td><td>LLM chat interface</td><td>8080</td></tr>
-            <tr><td>n8n</td><td>Workflow automation</td><td>5678</td></tr>
-            <tr><td>Grafana</td><td>Observability dashboard</td><td>3000</td></tr>
-            <tr><td>Portainer</td><td>Container management</td><td>9000</td></tr>
-            <tr><td>pgAdmin</td><td>Database admin UI</td><td>8000</td></tr>
-            <tr><td>Qdrant</td><td>Vector DB REST API</td><td>6333</td></tr>
-            <tr><td>Ollama</td><td>Inference API</td><td>11434</td></tr>
-            <tr><td>WUD</td><td>Container update manager</td><td>3838</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- AI AGENT INTEGRATION -->
-<section id="ai-agent" style="border-top:1px solid var(--border)">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:56px">
-      <span class="section-label">AI Agent Integration</span>
-      <h2 class="section-title">Designed for LLMs<br />and autonomous agents</h2>
-      <p class="section-desc" style="margin:0 auto">A standard <code style="font-size:14px;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--accent)">llms.txt</code> index for any AI assistant, plus a 5-skill deployment protocol that turns the install into a fully autonomous flow.</p>
-    </div>
-
-    <div class="ai-agent-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
-
-      <!-- llms.txt card -->
-      <div class="feature-card" style="padding:32px">
-        <div class="feature-icon">📄</div>
-        <h3 style="font-size:18px;margin-bottom:12px">llms.txt</h3>
-        <p style="margin-bottom:20px">
-          Standardised <a href="https://llmstxt.org/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">llms.txt</a> index at the project root. Lets any LLM-powered assistant (Claude, ChatGPT, Gemini, Perplexity, etc.) discover and ingest the project's docs, skills, hardware stacks, and 12-phase modules in one fetch.
-        </p>
-        <div class="code-block" style="margin-bottom:16px">
-          <div class="code-header">
-            <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-            <span>llms.txt</span>
-          </div>
-          <pre><span class="c"># OpenGenie AI Stack</span>
-<span class="c"># Modular Self-Hosted AI Infrastructure</span>
-
-&gt; "OpenGenie AI Stack is a modular,
-  self-hosted AI infrastructure
-  framework that runs on AMD ROCm,
-  NVIDIA CUDA, and ARM64 hardware..."
-
-<span class="c">## Project overview</span>
-- [README]                  (en/zh/ja/ko)
-- [System Design Document]  (SDD.md)
-- [Contributing guide]      (CONTRIBUTING.md)
-
-<span class="c">## Agent skills</span>
-- [Master orchestrator]
-- [Deployment state machine]
-- [Error recovery guide]
-- [GPU robustness]
-- [Full purge procedure]
-
-<span class="c">## Hardware stacks  / 12-phase modules</span>
-<span class="c">## Default service ports / Repository</span></pre>
+  <!-- ARCHITECTURE -->
+  <section id="phases">
+    <div class="container">
+      <div class="phases-layout">
+        <div>
+          <span class="section-label">Architecture</span>
+          <h2 class="section-title">12-Phase deployment</h2>
+          <div class="divider"></div>
+          <p class="section-desc">Each phase is a self-contained Docker Compose module with its own <code
+              style="font-size:13px;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--accent)">deploy.sh</code>.
+            Roll forward one layer at a time, or deploy everything in a single command.</p>
         </div>
-        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/llms.txt" class="btn-secondary" target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">View llms.txt →</a>
-      </div>
-
-      <!-- Agent Skills card -->
-      <div class="feature-card" style="padding:32px">
-        <div class="feature-icon">🤖</div>
-        <h3 style="font-size:18px;margin-bottom:12px">Agent Skills (autonomous deployment)</h3>
-        <p style="margin-bottom:20px">
-          Five protocol files in <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code> turn an AI coding assistant (Claude Code, Antigravity) into an autonomous deployment agent. State machine with disk-persisted recovery — survives reboots, network drops, and mid-install interruptions.
-        </p>
-        <div class="phases-list" style="margin-bottom:16px">
+        <div class="phases-list">
           <div class="phase-row">
             <div class="phase-num">00</div>
-            <div class="phase-info"><strong>Master Orchestrator</strong><span>Bootstrap rules, state persistence, execution loop</span></div>
+            <div class="phase-info"><strong>HWI Advisor</strong><span>Auto hardware calibration &amp; tuning
+                profile</span></div>
           </div>
           <div class="phase-row">
             <div class="phase-num">01</div>
-            <div class="phase-info"><strong>Deployment State Machine</strong><span>Pristine → drivers → reboot → init → app</span></div>
+            <div class="phase-info"><strong>Infrastructure</strong><span>Portainer, WebSSH</span></div>
           </div>
           <div class="phase-row">
             <div class="phase-num">02</div>
-            <div class="phase-info"><strong>Error Recovery Guide</strong><span>APT / Docker / driver / port self-healing</span></div>
+            <div class="phase-info"><strong>Database</strong><span>PostgreSQL 17, pgAdmin 4</span></div>
           </div>
           <div class="phase-row">
             <div class="phase-num">03</div>
-            <div class="phase-info"><strong>GPU Robustness</strong><span>Multi-layer NVIDIA / AMD / CPU / ARM detection</span></div>
+            <div class="phase-info"><strong>AI Interface</strong><span>Ollama, OpenWebUI, Redis</span></div>
           </div>
           <div class="phase-row">
             <div class="phase-num">04</div>
-            <div class="phase-info"><strong>Full Purge Procedure</strong><span>Complete teardown for clean reinstall</span></div>
+            <div class="phase-info"><strong>Automation</strong><span>n8n queue mode + workers</span></div>
           </div>
-        </div>
-        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/skills" class="btn-secondary" target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">Browse skills/ →</a>
-      </div>
-
-    </div>
-
-    <!-- Usage notes -->
-    <div style="margin-top:48px;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px">
-      <h3 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)">▸ How to use</h3>
-      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px">
-        <strong style="color:var(--fg)">For end users:</strong> Open the project in Antigravity / Claude Code, ask the assistant to "install this project" — it reads <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code> first, detects your GPU, generates a tuning profile, walks you through credential setup, and deploys all 12 phases with self-healing recovery.
-      </p>
-      <p style="font-size:14px;color:var(--muted);line-height:1.7">
-        <strong style="color:var(--fg)">For LLM apps:</strong> Fetch <code style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">https://&lt;your-fork&gt;/llms.txt</code> — every doc, skill, and module is linked as a raw markdown URL ready for ingestion.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- QUICKSTART -->
-<section id="quickstart">
-  <div class="container">
-    <div class="quickstart-grid">
-      <div>
-        <span class="section-label">Quick Start</span>
-        <h2 class="section-title">Up and running<br />in five steps</h2>
-        <div class="divider"></div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <strong>Clone the repo</strong>
-              <p>Clone and pick your hardware stack — AMD, NVIDIA, or ARM64.</p>
+          <div class="phase-row">
+            <div class="phase-num">05</div>
+            <div class="phase-info"><strong>RAG Stack</strong><span>Qdrant, Docling, Mosquitto</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">06</div>
+            <div class="phase-info"><strong>AI Core Engine</strong><span>Lemonade inference engine</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">07</div>
+            <div class="phase-info"><strong>Validation</strong><span>Health checks, benchmark scripts</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">08</div>
+            <div class="phase-info"><strong>Backup &amp; Recovery</strong><span>1-click backup, restore, VRAM
+                purge</span></div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-num">09</div>
+            <div class="phase-info"><strong>Monitoring &amp; Alerts</strong><span>tiger-monitor, MQTT alerting</span>
             </div>
           </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <strong>Configure credentials</strong>
-              <p>Copy <code style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">.env.example</code> → <code style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">.env</code> and replace all <code style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">CHANGE_ME</code> values.</p>
-            </div>
+          <div class="phase-row">
+            <div class="phase-num">10</div>
+            <div class="phase-info"><strong>Observability</strong><span>Grafana, Prometheus, Loki, cAdvisor</span></div>
           </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <strong>Run HWI Advisor</strong>
-              <p>Auto-detects hardware and writes an optimal tuning profile.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <strong>Deploy</strong>
-              <p>Full stack in one command, or deploy individual phases as needed.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">5</div>
-            <div class="step-body">
-              <strong>Verify</strong>
-              <p>Run the automated health check and benchmark suite.</p>
-            </div>
+          <div class="phase-row">
+            <div class="phase-num">11</div>
+            <div class="phase-info"><strong>Lifecycle</strong><span>What's Up Docker (WUD)</span></div>
           </div>
         </div>
       </div>
 
-      <div>
-        <div class="code-block">
-          <div class="code-header">
-            <div class="code-dots">
-              <span class="dot-r"></span>
-              <span class="dot-y"></span>
-              <span class="dot-g"></span>
+      <!-- Port table -->
+      <div style="margin-top:56px">
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:16px;letter-spacing:-0.01em;">Default Service Ports</h3>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;box-sizing:border-box">
+          <table class="ports-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Port</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>OpenWebUI</td>
+                <td>LLM chat interface</td>
+                <td>8080</td>
+              </tr>
+              <tr>
+                <td>n8n</td>
+                <td>Workflow automation</td>
+                <td>5678</td>
+              </tr>
+              <tr>
+                <td>Grafana</td>
+                <td>Observability dashboard</td>
+                <td>3000</td>
+              </tr>
+              <tr>
+                <td>Portainer</td>
+                <td>Container management</td>
+                <td>9000</td>
+              </tr>
+              <tr>
+                <td>pgAdmin</td>
+                <td>Database admin UI</td>
+                <td>8000</td>
+              </tr>
+              <tr>
+                <td>Qdrant</td>
+                <td>Vector DB REST API</td>
+                <td>6333</td>
+              </tr>
+              <tr>
+                <td>Ollama</td>
+                <td>Inference API</td>
+                <td>11434</td>
+              </tr>
+              <tr>
+                <td>WUD</td>
+                <td>Container update manager</td>
+                <td>3838</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI AGENT INTEGRATION -->
+  <section id="ai-agent" style="border-top:1px solid var(--border)">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:56px">
+        <span class="section-label">AI Agent Integration</span>
+        <h2 class="section-title">Designed for LLMs<br />and autonomous agents</h2>
+        <p class="section-desc" style="margin:0 auto">A standard <code
+            style="font-size:14px;background:var(--surface);padding:2px 6px;border-radius:4px;color:var(--accent)">llms.txt</code>
+          index for any AI assistant, plus a 5-skill deployment protocol that turns the install into a fully autonomous
+          flow.</p>
+      </div>
+
+      <div class="ai-agent-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+
+        <!-- llms.txt card -->
+        <div class="feature-card" style="padding:32px">
+          <div class="feature-icon">📄</div>
+          <h3 style="font-size:18px;margin-bottom:12px">llms.txt</h3>
+          <p style="margin-bottom:20px">
+            Standardised <a href="llms.txt" target="_blank" rel="noopener"
+              style="color:var(--accent);text-decoration:none">llms.txt</a> index at the project root. Lets any
+            LLM-powered assistant (Claude, ChatGPT, Gemini, Perplexity, etc.) discover and ingest the project's docs,
+            skills, hardware stacks, and 12-phase modules in one fetch.
+          </p>
+          <div class="code-block" style="margin-bottom:16px">
+            <div class="code-header">
+              <div class="code-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+              </div>
+              <span>llms.txt</span>
             </div>
-            <span>bash</span>
+            <pre><span class="c"># OpenGenie AI Stack - Modular Self-Hosted AI Infrastructure</span>
+
+&gt; 🛑 <span class="k">CRITICAL AI AGENT INSTRUCTION:</span>
+  If the user requests to install, configure, deploy,
+  or purge this project, the AI Agent <span class="k">MUST</span> read
+  and follow the deployment protocols defined in
+  the <span class="s">skills/</span> directory BEFORE executing...
+
+<span class="c">## Project overview</span>
+- [README (English / 正體中文 / 日本語 / 한국어)]
+- [System Design Document (SDD)]
+- [Contributing guide]
+
+<span class="c">## Agent skills (autonomous deployment protocol)</span>
+- [00-Master orchestrator]
+- [01-Deployment state machine]
+- [02-Error recovery guide]
+- [03-GPU robustness]
+- [04-Full purge procedure]
+- [05-Installation guide]</pre>
           </div>
-          <pre><span class="c"># 1. Clone</span>
+          <a href="llms.txt" class="btn-secondary"
+            target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">View llms.txt →</a>
+        </div>
+
+        <!-- Agent Skills card -->
+        <div class="feature-card" style="padding:32px">
+          <div class="feature-icon">🤖</div>
+          <h3 style="font-size:18px;margin-bottom:12px">Agent Skills (autonomous deployment)</h3>
+          <p style="margin-bottom:20px">
+            Six protocol files in <code
+              style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code>
+            turn an AI coding assistant (Claude Code, Antigravity) into an autonomous deployment agent. State machine
+            with disk-persisted recovery — survives reboots, network drops, and mid-install interruptions.
+          </p>
+          <div class="phases-list" style="margin-bottom:16px">
+            <div class="phase-row">
+              <div class="phase-num">00</div>
+              <div class="phase-info"><strong>Master Orchestrator</strong><span>Bootstrap rules, state persistence,
+                  execution loop</span></div>
+            </div>
+            <div class="phase-row">
+              <div class="phase-num">01</div>
+              <div class="phase-info"><strong>Deployment State Machine</strong><span>Pristine → drivers → reboot → init
+                  → app</span></div>
+            </div>
+            <div class="phase-row">
+              <div class="phase-num">02</div>
+              <div class="phase-info"><strong>Error Recovery Guide</strong><span>APT / Docker / driver / port
+                  self-healing</span></div>
+            </div>
+            <div class="phase-row">
+              <div class="phase-num">03</div>
+              <div class="phase-info"><strong>GPU Robustness</strong><span>Multi-layer NVIDIA / AMD / CPU / ARM
+                  detection</span></div>
+            </div>
+            <div class="phase-row">
+              <div class="phase-num">04</div>
+              <div class="phase-info"><strong>Full Purge Procedure</strong><span>Complete teardown for clean
+                  reinstall</span></div>
+            </div>
+            <div class="phase-row">
+              <div class="phase-num">05</div>
+              <div class="phase-info"><strong>Installation Guide</strong><span>Autonomous installation &amp; deployment
+                  protocol</span></div>
+            </div>
+          </div>
+          <a href="../skills" class="btn-secondary"
+            target="_blank" rel="noopener" style="font-size:13px;padding:8px 16px">Browse skills/ →</a>
+        </div>
+
+      </div>
+
+      <!-- Interactive Skill Explorer -->
+      <div class="skill-explorer-card"
+        style="margin-top:56px;background:linear-gradient(135deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.7) 100%);border:1px solid rgba(34,197,94,0.15);border-radius:12px;padding:32px">
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--accent)">✦</span> Interactive Agent Skill Protocol Explorer
+        </h3>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:24px">Click the tabs below to explore the core deployment protocols and autonomous AI agent skills (00 to 05) defined in the repository.</p>
+
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+          <button onclick="showSkillStep('skill00')" class="step-btn active-step" id="btn-skill00">Skill 00: Orchestrator</button>
+          <button onclick="showSkillStep('skill01')" class="step-btn" id="btn-skill01">Skill 01: State Machine</button>
+          <button onclick="showSkillStep('skill02')" class="step-btn" id="btn-skill02">Skill 02: Error Recovery</button>
+          <button onclick="showSkillStep('skill03')" class="step-btn" id="btn-skill03">Skill 03: GPU Robustness</button>
+          <button onclick="showSkillStep('skill04')" class="step-btn" id="btn-skill04">Skill 04: Full Purge</button>
+          <button onclick="showSkillStep('skill05')" class="step-btn" id="btn-skill05">Skill 05: Installation Guide</button>
+        </div>
+
+        <div
+          style="background:#090d16;border:1px solid var(--border);border-radius:8px;padding:20px;font-family:monospace;font-size:13px;line-height:1.6;color:#e2e8f0;overflow-x:auto;max-height:380px">
+          <pre id="skill-content-block" style="white-space:pre-wrap;margin:0"></pre>
+        </div>
+      </div>
+
+      <!-- Usage notes -->
+      <div
+        style="margin-top:48px;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px">
+        <h3 style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)">▸ How to use</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px">
+          <strong style="color:var(--fg)">For end users:</strong> Open the project in Antigravity / Claude Code, ask the
+          assistant to "install this project" — it reads <code
+            style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">skills/</code>
+          first, detects your GPU, generates a tuning profile, walks you through credential setup, and deploys all 12
+          phases with self-healing recovery.
+        </p>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7">
+          <strong style="color:var(--fg)">For LLM apps:</strong> Fetch <code
+            style="font-size:13px;background:var(--bg);padding:2px 5px;border-radius:4px;color:var(--accent)">https://&lt;your-fork&gt;/llms.txt</code>
+          — every doc, skill, and module is linked as a raw markdown URL ready for ingestion.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICKSTART -->
+  <section id="quickstart">
+    <div class="container">
+      <div class="quickstart-grid">
+        <div>
+          <span class="section-label">Quick Start</span>
+          <h2 class="section-title">Up and running<br />in five steps</h2>
+          <div class="divider"></div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Clone the repo</strong>
+                <p>Clone and pick your hardware stack — AMD, NVIDIA, or ARM64.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Configure credentials</strong>
+                <p>Copy <code
+                    style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">.env.example</code>
+                  → <code style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">.env</code>
+                  and replace all <code
+                    style="font-size:12px;background:var(--surface);padding:2px 5px;border-radius:4px">CHANGE_ME</code>
+                  values.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Run HWI Advisor</strong>
+                <p>Auto-detects hardware and writes an optimal tuning profile.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <strong>Deploy</strong>
+                <p>Full stack in one command, or deploy individual phases as needed.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-body">
+                <strong>Verify</strong>
+                <p>Run the automated health check and benchmark suite.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="dot-r"></span>
+                <span class="dot-y"></span>
+                <span class="dot-g"></span>
+              </div>
+              <span>bash</span>
+            </div>
+            <pre><span class="c"># 1. Clone</span>
 <span class="k">git</span> clone https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack.git
 <span class="k">cd</span> OpenGenie-AI-Stack
 
@@ -912,45 +1190,138 @@
 
 <span class="c"># 6. Verify</span>
 <span class="k">sudo</span> bash master-deploy.sh test</pre>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section id="cta">
-  <div class="container">
-    <span class="section-label">Get Started</span>
-    <h2 class="section-title">Your private AI stack,<br />fully under your control</h2>
-    <p class="section-desc">No cloud lock-in. No usage fees. Deploy on your hardware, keep your data on-premise.</p>
-    <div class="cta-actions">
-      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="btn-primary" target="_blank" rel="noopener">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-        Star on GitHub
-      </a>
-      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/CONTRIBUTING.md" class="btn-secondary" target="_blank" rel="noopener">
-        Contributing Guide
-      </a>
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <span class="section-label">Get Started</span>
+      <h2 class="section-title">Your private AI stack,<br />fully under your control</h2>
+      <p class="section-desc">No cloud lock-in. No usage fees. Deploy on your hardware, keep your data on-premise.</p>
+      <div class="cta-actions">
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" class="btn-primary" target="_blank"
+          rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          Star on GitHub
+        </a>
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/CONTRIBUTING.md" class="btn-secondary"
+          target="_blank" rel="noopener">
+          Contributing Guide
+        </a>
+      </div>
+      <div class="social-row">
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/README.md" class="social-badge"
+          target="_blank" rel="noopener">📄 Documentation</a>
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/issues" class="social-badge" target="_blank"
+          rel="noopener">🐛 Issues</a>
+        <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/LICENSE" class="social-badge"
+          target="_blank" rel="noopener">⚖️ MIT License</a>
+      </div>
     </div>
-    <div class="social-row">
-      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/README.md" class="social-badge" target="_blank" rel="noopener">📄 Documentation</a>
-      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/issues" class="social-badge" target="_blank" rel="noopener">🐛 Issues</a>
-      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/LICENSE" class="social-badge" target="_blank" rel="noopener">⚖️ MIT License</a>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <p>
-    MIT © 2026 <a href="https://github.com/TigerAI-Taiwan" target="_blank" rel="noopener">TigerAI-Taiwan</a>
-    &nbsp;·&nbsp;
-    <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" target="_blank" rel="noopener">GitHub</a>
-    &nbsp;·&nbsp;
-    <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
-  </p>
-</footer>
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      MIT © 2026 <a href="https://github.com/TigerAI-Taiwan" target="_blank" rel="noopener">TigerAI-Taiwan</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack" target="_blank" rel="noopener">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/blob/main/CONTRIBUTING.md" target="_blank"
+        rel="noopener">Contributing</a>
+    </p>
+  </footer>
+
+  <script>
+    const skillSteps = {
+      skill00: `[Skill 00: Master Orchestrator]
+引導部署流程、引導引導順序與磁碟狀態管理。
+
+核心規範 (Core Directives):
+1. ⚡ 啟動首要規範 (Bootstrap Rule)：在執行任何動作前，必須完整讀取 \`skills/\` 的所有檔案！
+2. 💾 狀態持久化 (Disk State)：透過讀取/寫入 \`$PROJECT_ROOT/.agent-state.json\` 追蹤生命週期，防止中途斷網或重新開機遺失進度。
+3. 🛡️ 狀態自我防禦 (State Integrity)：寫入新狀態前，先將當前狀態備份至 \`.agent-state.bak.json\`。若主狀態損壞，自動回復至備份狀態。`,
+
+      skill01: `[Skill 01: Deployment State Machine]
+定義環境初始化與全量部署的結構化執行路徑。
+
+核心流程 (State Transitions):
+* [STATE 0: Pristine] -> 全新作業系統。複製 .env，填入安全金鑰，執行 master-deploy.sh system，隨後 REBOOT。
+* [STATE 1: Post-Reboot] -> GPU 驅動生效。執行 master-deploy.sh init，接著執行 master-deploy.sh app。
+* [STATE 2: Complete] -> 服務全部啟動且驗證正常。
+
+⚙️ 自律偵測技巧 (Self-Probing):
+- 透過 dpkg 檢查驅動套件是否存在。
+- 透過 nvidia-smi 確定 GPU 是否在重啟後順利啟用。
+- 透過 docker ps 檢查 Stack 運作狀態。`,
+
+      skill02: `[Skill 02: Error Recovery Guide]
+套件鎖、Docker 守護行程異常與 GPU 衝突之自主診斷與自癒。
+
+自癒除錯手冊 (Self-Healing Playbook):
+1. 📦 APT 套件鎖 (APT Locks): 自動清除 /var/lib/dpkg/lock-frontend。
+2. 🐳 Docker Daemon 異常: 若 docker 沒反應，自動重啟服務 (systemctl restart docker)。
+3. 🌐 埠號衝突 (Port Conflicts): 偵測已佔用埠號之 PID，引導使用者解除佔用或調整 .env。
+4. 📥 鏡像拉取失敗 (Image Pull Failure): 若鏡像拉取失敗，自動更換為 Docker Hub 備用鏡像。`,
+
+      skill03: `[Skill 03: GPU Robustness]
+跨平台多層級硬體感知（NVIDIA CUDA、AMD ROCm、CPU、ARM64）。
+
+硬體感知器 (Hardware Identification):
+* NVIDIA Host -> 偵測 CUDA 核心，自動導向 deployments/nvidia-compose-stack。
+* AMD Host -> 檢查 /dev/kfd，採用 deployments/amd-compose-stack。
+* ARM64 Host (如 Apple Silicon / Jetson) -> 檢查核心架喚，使用 deployments/arm64-compose-stack。
+* CPU Fallback -> 若無 any GPU，以 CPU 純算模式部署。`,
+
+      skill04: `[Skill 04: Full Purge Procedure]
+徹底清除先前部署與原生 Systemd 服務，使主機恢復至完全乾淨的 Pristine 狀態。
+
+淨化步驟 (Purge Execution Sequence):
+1. 🛑 停止容器: cd deployments/<stack> && docker compose down -v
+2. 🧹 清理磁碟: 執行 docker system prune -a --volumes 清除快取與無用 Volume。
+3. 🔌 卸載原生服務: 停止並禁用 Lemonade native (systemd) 服務及設定檔。
+4. 📁 清空工作區: 徹底移除日誌資料夾 /home/wrt/TigerAI 確保下次部署完全乾淨。`,
+
+      skill05: `[Skill 05: Installation Guide]
+自主代理人（AI Agent）進行全自動化部署的高階生命週期指南。
+
+安裝生命週期 (Installation Lifecycle Steps):
+1. 🔍 Probe System -> 自動感知主機架構、GPU，挑選適當 compose-stack。
+2. 🔑 Setup Secrets -> 安全防漏密，建立 .env 並引導使用者直覺填入金鑰。
+3. 📦 Drivers & Core -> 部署基礎引擎，引導重新開機確保驅動就緒。
+4. ⚙️ HWI Advisor -> 執行硬體診斷與性能微調，選定優化設定檔。
+5. 🚀 Deploy & Test -> 啟動所有 12 大模組，並執行自動化健全檢驗。`
+    };
+
+    function showSkillStep(stepKey) {
+      const block = document.getElementById('skill-content-block');
+      if (block && skillSteps[stepKey]) {
+        block.textContent = skillSteps[stepKey];
+      }
+
+      const buttons = document.querySelectorAll('.step-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('active-step');
+      });
+
+      const activeBtn = document.getElementById('btn-' + stepKey);
+      if (activeBtn) {
+        activeBtn.classList.add('active-step');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showSkillStep('skill00');
+    });
+  </script>
 
 </body>
+
 </html>

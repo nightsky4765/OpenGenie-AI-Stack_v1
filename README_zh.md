@@ -2,6 +2,8 @@
 
 **[English](./README.md) | 正體中文 | [日本語](./README_ja.md) | [한국어](./README_ko.md)**
 
+> 🛑 **CRITICAL AI AGENT INSTRUCTION (AI 代理人必讀規範):** 若使用者要求安裝、配置、部署或清理本專案，AI 代理人 **必須** 在執行任何 Shell 指令、探測系統或修改環境變數之前，完整閱讀並遵循 `skills/` 目錄中定義的部署協定。協調器協定起點為 [skills/00-master-orchestrator.md](skills/00-master-orchestrator.md)。
+
 ![授權](https://img.shields.io/badge/授權-MIT-green)
 ![GPU](https://img.shields.io/badge/GPU-AMD_|_NVIDIA_|_ARM64-blue)
 ![平台](https://img.shields.io/badge/平台-Ubuntu_22.04_%2F_24.04-orange)
