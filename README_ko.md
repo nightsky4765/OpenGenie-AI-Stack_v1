@@ -2,6 +2,8 @@
 
 **[English](./README.md) | [正體中文](./README_zh.md) | [日本語](./README_ja.md) | 한국어**
 
+> 🛑 **CRITICAL AI AGENT INSTRUCTION (AI 에이전트 필수 준수 수칙):** 사용자가 이 프로젝트의 설치, 구성, 배포 또는 초기화(cleanup)를 요청하는 경우, AI 에이전트는 셸 명령을 실행하거나 시스템을 조사하거나 환경 변수를 수정하기 전에 **반드시** `skills/` 디렉터리에 정의된 배포 프로토콜을 완벽하게 읽고 준수해야 합니다. 오케스트레이터 프로토콜의 시작점은 [skills/00-master-orchestrator.md](skills/00-master-orchestrator.md)입니다.
+
 ![라이선스](https://img.shields.io/badge/라이선스-MIT-green)
 ![GPU](https://img.shields.io/badge/GPU-AMD_|_NVIDIA_|_ARM64-blue)
 ![플랫폼](https://img.shields.io/badge/플랫폼-Ubuntu_22.04_%2F_24.04-orange)
