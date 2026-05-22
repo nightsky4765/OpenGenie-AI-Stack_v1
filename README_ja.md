@@ -2,6 +2,8 @@
 
 **[English](./README.md) | [正體中文](./README_zh.md) | 日本語 | [한국어](./README_ko.md)**
 
+> 🛑 **CRITICAL AI AGENT INSTRUCTION (AI 代理人必須遵守規範):** ユーザーが本プロジェクトのインストール、設定、デプロイ、またはクリーンアップを要求した場合、AI 代理人はシェルコマンドの実行、システム調査、環境変数の変更を行う前に、**必ず** `skills/` ディレクトリで定義されているデプロイプロトコルを完全に読み、それに従わなければなりません。オーケストレータープロトコルの開始点は [skills/00-master-orchestrator.md](skills/00-master-orchestrator.md) です。
+
 ![ライセンス](https://img.shields.io/badge/ライセンス-MIT-green)
 ![GPU](https://img.shields.io/badge/GPU-AMD_|_NVIDIA_|_ARM64-blue)
 ![プラットフォーム](https://img.shields.io/badge/プラットフォーム-Ubuntu_22.04_%2F_24.04-orange)
