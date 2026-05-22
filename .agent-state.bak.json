@@ -1,0 +1,5 @@
+{
+  "state": "DEPLOYMENT_COMPLETE",
+  "gpu": "NVIDIA",
+  "stack": "deployments/arm64-compose-stack"
+}

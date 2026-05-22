@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Prometheus 自身監控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # NVIDIA GPU 指標 (DCGM Exporter)
+  - job_name: 'gpu-metrics'
+    static_configs:
+      - targets: ['gpu-exporter:9400']
+
+  # 容器指標 (cAdvisor)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # Host 指標 (Node Exporter)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Docker 容器自動發現 (如果有其他 exporters)
+  - job_name: 'docker-containers'
+    static_configs:
+      - targets: []

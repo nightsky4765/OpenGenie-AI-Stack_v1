@@ -1,0 +1,69 @@
+# OpenGenie AI Stack - Modular Self-Hosted AI Infrastructure for AMD / NVIDIA / ARM64
+
+> 🛑 **CRITICAL AI AGENT INSTRUCTION:** If the user requests to install, configure, deploy, or purge this project, the AI Agent **MUST** read and follow the deployment protocols defined in the `skills/` directory BEFORE executing any shell command, probing the system, or writing any files. The orchestrator protocol starts with `skills/00-master-orchestrator.md`.
+
+> "OpenGenie AI Stack is a modular, self-hosted AI infrastructure framework that runs on AMD ROCm, NVIDIA CUDA, and ARM64 hardware. Deploy a complete private AI system on your own server in one shot — covering LLM inference, RAG knowledge base, workflow automation, and observability monitoring. Designed around a 12-phase deployment methodology with autonomous AI agent skills for end-to-end installation."
+
+## Project overview
+
+- [README (English)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/README.md)
+- [README (正體中文)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/README_zh.md)
+- [README (日本語)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/README_ja.md)
+- [README (한국어)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/README_ko.md)
+- [System Design Document (SDD)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/SDD.md)
+- [Contributing guide](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/CONTRIBUTING.md)
+- [License (MIT)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/LICENSE)
+
+## Agent skills (autonomous deployment protocol)
+
+- [Master orchestrator — bootstrap rules, state persistence, execution loop](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/00-master-orchestrator.md)
+- [Deployment state machine — pristine → drivers → init → app flow](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/01-deployment-state-machine.md)
+- [Error recovery guide — APT / Docker / driver / port self-healing](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/02-error-recovery-guide.md)
+- [GPU robustness — multi-layer hardware detection NVIDIA / AMD / CPU / ARM](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/03-gpu-robustness.md)
+- [Full purge procedure — complete teardown for clean reinstall](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/04-full-purge-procedure.md)
+- [Installation guide — autonomous installation & deployment protocol](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/05-installation-guide.md)
+
+
+## Hardware stacks
+
+- [AMD ROCm stack — README](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/deployments/amd-compose-stack/README.md)
+- [NVIDIA CUDA stack — README](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/deployments/nvidia-compose-stack/README.md)
+- [ARM64 stack (Apple Silicon / Jetson / Ampere) — README](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/deployments/arm64-compose-stack/README.md)
+
+## 12-phase deployment modules (AMD reference)
+
+- [Phase 00 — HWI hardware advisor (auto tuning)](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/00-pre-flight-advisor)
+- [Phase 00 — System setup: ROCm drivers + Docker](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/deployments/amd-compose-stack/00-system-setup-rocm-docker/README.md)
+- [Phase 01 — Infrastructure: Portainer + WebSSH](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/01-infra-webssh-portainer)
+- [Phase 02 — Database: PostgreSQL 17 + pgAdmin 4](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/02-database-postgres-pgadmin)
+- [Phase 03 — AI interface: Ollama + OpenWebUI + Redis](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/03-ai-interface-ollama-openwebui-redis)
+- [Phase 04 — Automation: n8n Queue Mode + Workers](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/04-automation-n8n)
+- [Phase 05 — RAG stack: Docling + Qdrant + Mosquitto MQTT](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/05-rag-stack-docling-qdrant-mosquitto)
+- [Phase 06 — AI core: Lemonade inference engine](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/06-ai-core-lemonade)
+- [Phase 07 — Validation: health checks + benchmarks](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/07-validation-stack)
+- [Phase 07 — Node-RED automation (optional)](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/deployments/amd-compose-stack/07-automation-nodered/README.md)
+- [Phase 08 — Backup & recovery: one-click snapshot + restore](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/08-backup-recovery)
+- [Phase 09 — Monitoring & alerting: tiger-monitor + MQTT alerts](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/09-monitoring-alerting)
+- [Phase 10 — Observability: Grafana + Prometheus + Loki + cAdvisor + DCGM](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/10-observability-grafana)
+- [Phase 11 — Lifecycle: What's Up Docker (image update tracking)](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/deployments/amd-compose-stack/11-lifecycle-wud)
+
+## Default service ports
+
+- OpenWebUI (AI chat): http://localhost:8080
+- n8n (workflow automation): http://localhost:5678
+- Grafana (monitoring): http://localhost:3000
+- Portainer (container manager): http://localhost:9000
+- pgAdmin (database UI): http://localhost:8000
+- Qdrant (vector database): http://localhost:6333
+- Ollama (LLM API): http://localhost:11434
+- Lemonade Edu / RAG / Embed: 8800 / 8801 / 8802
+- cAdvisor: http://localhost:8088
+- Loki: http://localhost:3100
+- Mosquitto MQTT: tcp://localhost:1883
+- Docling: http://localhost:5001
+- WUD: http://localhost:3838
+
+## Repository
+
+- [GitHub repository](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack)
+- [Issue templates](https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/tree/main/.github/ISSUE_TEMPLATE)
