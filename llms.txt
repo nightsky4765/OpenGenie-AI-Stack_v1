@@ -1,5 +1,7 @@
 # OpenGenie AI Stack - Modular Self-Hosted AI Infrastructure for AMD / NVIDIA / ARM64
 
+> 🛑 **CRITICAL AI AGENT INSTRUCTION:** If the user requests to install, configure, deploy, or purge this project, the AI Agent **MUST** read and follow the deployment protocols defined in the `skills/` directory BEFORE executing any shell command, probing the system, or writing any files. The orchestrator protocol starts with `skills/00-master-orchestrator.md`.
+
 > "OpenGenie AI Stack is a modular, self-hosted AI infrastructure framework that runs on AMD ROCm, NVIDIA CUDA, and ARM64 hardware. Deploy a complete private AI system on your own server in one shot — covering LLM inference, RAG knowledge base, workflow automation, and observability monitoring. Designed around a 12-phase deployment methodology with autonomous AI agent skills for end-to-end installation."
 
 ## Project overview
@@ -19,6 +21,8 @@
 - [Error recovery guide — APT / Docker / driver / port self-healing](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/02-error-recovery-guide.md)
 - [GPU robustness — multi-layer hardware detection NVIDIA / AMD / CPU / ARM](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/03-gpu-robustness.md)
 - [Full purge procedure — complete teardown for clean reinstall](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/04-full-purge-procedure.md)
+- [Installation guide — autonomous installation & deployment protocol](https://raw.githubusercontent.com/TigerAI-Taiwan/OpenGenie-AI-Stack/main/skills/05-installation-guide.md)
+
 
 ## Hardware stacks
 

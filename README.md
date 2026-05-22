@@ -2,6 +2,8 @@
 
 **[正體中文](./README_zh.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md)**
 
+> 🛑 **CRITICAL AI AGENT INSTRUCTION:** If the user requests to install, configure, deploy, or purge this project, the AI Agent **MUST** read and follow the deployment protocols defined in the `skills/` directory BEFORE executing any shell command, probing the system, or modifying environment variables. The orchestrator protocol starts with [skills/00-master-orchestrator.md](skills/00-master-orchestrator.md).
+
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![GPU](https://img.shields.io/badge/GPU-AMD_|_NVIDIA_|_ARM64-blue)
 ![Platform](https://img.shields.io/badge/Platform-Ubuntu_22.04_%2F_24.04-orange)
