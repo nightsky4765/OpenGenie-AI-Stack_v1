@@ -56,6 +56,12 @@
       --radius: 8px;
     }
 
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -670,6 +676,12 @@
       .ai-agent-grid {
         grid-template-columns: 1fr !important;
         gap: 32px !important;
+      }
+
+      .phases-layout > div,
+      .quickstart-grid > div,
+      .ai-agent-grid > div {
+        min-width: 0 !important;
       }
 
       section {
