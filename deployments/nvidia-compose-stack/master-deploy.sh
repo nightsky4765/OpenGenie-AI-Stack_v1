@@ -73,7 +73,7 @@ run_step() {
     local folder=$1
 
     # AI Core Lemonade is exclusively required for AMD ROCm environments
-    if [ "$folder" == "06-ai-core-lemonade" ] && [ "${TIGER_GPU_TYPE:-NVIDIA}" != "AMD" ]; then
+    if [ "$folder" == "06-ai-core-lemonade" ]; then
         LOG_INFO ">>> Skipping module: $folder (Not required for non-AMD environments)"
         return 0
     fi
