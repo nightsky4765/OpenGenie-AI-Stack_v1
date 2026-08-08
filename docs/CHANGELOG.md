@@ -1,5 +1,10 @@
 # Changelog
 
+## [v2.0.1] - 2026-08-08
+
+- 新增純文件測試版本，用於驗證 tag push 自動建立 GitHub Release。
+- [Full Release Note](v2.0.1/RELEASE-NOTE.md)
+
 ## [v2.0.0] - 2026-08-05
 
 - 移除 Node-RED 及相關的部署、監控與備份流程。
@@ -41,6 +46,7 @@
 - [Full Release Note](v1.0.0/RELEASE-NOTE.md)
 
 [v2.0.0]: https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/compare/v1.3.0...v2.0.0
+[v2.0.1]: https://github.com/nightsky4765/OpenGenie-AI-Stack_v1/compare/a87452855f46cf4fdf2f1140a1f536dc7e6a9543...v2.0.1
 [v1.3.0]: https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/compare/v1.2.1...v1.3.0
 [v1.2.1]: https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/compare/v1.2.0...v1.2.1
 [v1.2.0]: https://github.com/TigerAI-Taiwan/OpenGenie-AI-Stack/compare/v1.1.0...v1.2.0
